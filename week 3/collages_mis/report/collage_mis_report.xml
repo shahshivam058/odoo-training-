@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+        <template id="report_informatation">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="record">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h2><center>STUDENT PROGRESS REPORT</center> </h2>
+                           <label>Name:</label> <p  t-field="record.name"></p>
+                           <label>Enrollment No:</label> <p  t-field="record.enrollment_no"></p>
+                           <label>Exam Type:</label> <p  t-field="record.exam_id"></p>
+                           <label>Department:</label> <p  t-field="record.department_id"></p>
+                           <label>Total Attendance:</label> <p  t-field="record.total_attendance"></p>
+                           <label>Marks:</label> <p  t-field="record.marks"></p>
+                           <label>Admission Year:</label> <p  t-field="record.admission_year"></p>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+       <report
+            id="action_report_students_informatation"
+            string="Student Progress report"
+            model="students"
+            report_type="qweb-pdf"
+            name="collages_mis.report_informatation"
+            file="collages_mis.report_informatation"
+            print_report_name="'Informatation - %s - %s' % (object.department_id, (object.name).replace('/',''))"
+            groups='collages_mis.group_faculty'/>
+            
+</odoo>

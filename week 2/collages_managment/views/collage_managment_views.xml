@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+       <record id="collage_managment_view_form" model="ir.ui.view">
+            <field name="name">collage managment view form</field>
+            <field name="model">faculty</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="faculty_name"/>
+                                <field name="mobile_no"/>
+                                <field name="collage_joining_date"/>
+                                <field name="email_id"/>
+                                <field name="department_name"/>
+                                <field name="department_code"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+       <record id="collage_student_view_form" model="ir.ui.view">
+            <field name="name"> collage student view form</field>
+            <field name="model">students</field>
+            <field name="inherit_id" ref="collages_mis.collage_informatation_view_form"/>
+            <field name="arch" type="xml">
+                  <xpath expr="//field[@name='mobile_no']" position="after">
+                    <field name="date_of_birth"/>
+                </xpath>
+                <field name="date_of_birth" position="before">
+                    <field name="father_name"/>
+                    <field name="mother_name"/>
+                </field>
+              <xpath expr="//group[@name='info']" position="inside">
+                    <field name="division"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="collage_managment_view_tree" model="ir.ui.view">
+            <field name="name">collage managment view tree</field>
+            <field name="model">faculty</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="faculty_name"/>
+                    <field name="department_name"/>
+                    <field name="email_id"/>
+                    <field name="department_code"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="collage_managment_view_search" model="ir.ui.view">
+            <field name="name">collage managment view search</field>
+            <field name="model">faculty</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="faculty_name"/>
+                    <field name="department_name"/>
+                    <field name="email_id"/>
+                    <field name="department_code"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id='collage_managment_view_calendar' model='ir.ui.view'>
+            <field name='name'>collage managment view calendar</field>
+            <field name='model'>faculty</field>
+            <field name='arch' type='xml'>
+                <calendar date_start='collage_joining_date' >
+                    <field name='faculty_name'/>
+                </calendar>
+            </field>
+        </record>
+
+        <record id="fees_managmeng_view_form" model="ir.ui.view">
+            <field name="name">fees managment view form</field>
+            <field name="model">fees</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="tution_fees"/>
+                                <field name="extra_fees"/>
+                                <field name="diposit"/>
+                                <field name="last_date"/>
+                                <field name="collages_id"/>
+                                <field name='total_fees'/>
+                            </group>
+                        </group>
+                     </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id='fees_managment_view_graph' model='ir.ui.view'>
+            <field name='name'>fees managment view graph</field>
+            <field name='model'>fees</field>
+            <field name='arch' type='xml'>
+                <graph string='fees' type='pie'>
+                    <field name='tution_fees'/>
+                    <field name='extra_fees'/>
+                    <field name='diposit' type='masure'/>
+                </graph>
+            </field>
+        </record>
+
+        <record id='fees_managment_view_calendar' model='ir.ui.view'>
+            <field name='name'>fees managment view calendar</field>
+            <field name='model'>fees</field>
+            <field name='arch' type='xml'>
+                <calendar date_start='last_date' color='collages_id'>
+                    <field name='collages_id'/>
+                </calendar>
+            </field>
+        </record>
+
+        <record id='fees_managment_view_tree' model='ir.ui.view'>
+            <field name='name'>fees managment view tree</field>
+            <field name='model'>fees</field>
+            <field name='arch' type='xml'>
+                <tree>
+                    <field name='collages_id'/>
+                    <field name='last_date'/>
+                    <field name='total_fees'/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="collage_managment_action">
+            <field name="name">Faculty </field>
+            <field name="res_model">faculty</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="fees_managment_action">
+            <field name="name">Fees</field>
+            <field name="res_model">fees</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,graph,calendar</field>
+        </record>
+
+        <menuitem 
+            name="Faculty"
+            id="collages_mis.collage_managment_submenu_1"
+            parent="collages_mis.collage_informatation_menu_1"
+            action="collage_managment_action"/>
+
+        <menuitem 
+            name="Fees"
+            id="collages_mis.collage_managment_submenu_2"
+            parent="collages_mis.collage_informatation_menu_2"
+            action="fees_managment_action"/>
+</odoo>

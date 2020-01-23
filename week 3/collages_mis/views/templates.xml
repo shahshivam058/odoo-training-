@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+          <template id="index">
+              <title>Hostle</title>
+              <t t-foreach="hostle_name" t-as="hostle">
+                <p>
+                  <t t-esc="hostle"/>
+                </p>
+              </t>
+          </template>
+     
+         <template id="students" >
+          <t t-call="website.layout">
+              <title>Students</title>
+              <div class="oe_structure">
+                 <div class="container">
+                   <table border='1' style='font-style: italic;' >
+                    <tr>
+                      <td>Student Name:</td>
+                    </tr>
+                <t t-foreach="studentss" t-as="student">
+                  <tr>
+                    <td>
+                      <a t-attf-href="/collage/{{ slug(student) }}">
+                        <t t-esc="student.name"/>
+                      </a>
+                    </td>
+                  </tr>
+               </t>
+               </table>
+           </div>
+          </div>
+        </t>
+      </template>
+
+      <template id="department">
+        <t t-call="website.layout">
+        <title>DEPARTMENT</title>
+          <div class="oe_structure">
+            <div class="container">
+              <table border='1' style='font-style: italic;font-size:15px;font-weight: bold;'>
+                <tr>
+                  <td> Department Name</td>
+                  <td> head of Department</td>;
+                </tr>
+                 <t t-foreach="departments" t-as="departmentt">
+                  <tr>
+                    <td><t t-esc="departmentt.department_name"/></td>
+                    <td><t t-esc="departmentt.head_of_department"/></td>
+                  </tr>
+                </t>
+              </table>
+            </div>
+          </div>
+        </t>
+      </template>
+
+      <template id="data">
+        <t t-call="website.layout">
+          <t t-set="title">student123</t>
+            <div class="oe_structure">
+              <div class="container">
+                <t t-foreach="students" t-as="student">
+                  <table border='1' width='100%' style='font-style: italic;font-size:15px;font-weight: bold;'>
+                    <tr>
+                      <td>Name :</td>
+                      <td><t t-esc="student.name"/></td>
+                    </tr>
+                    <tr>
+                      <td> Enrollment No:</td>
+                      <td> <t t-esc="student.enrollment_no"/></td>
+                    </tr>
+                    <tr>
+                    <td>semester:</td>
+                    <td> <t t-esc="student.semester"/></td>
+                  </tr>
+                  <tr>
+                    <td>Total Attendance:</td>
+                    <td><t t-esc="student.total_attendance"/></td>
+                  </tr>
+                   <tr>
+                    <td>Total Marks:</td>
+                    <td><t t-esc="student.marks"/></td>
+                  </tr>
+                </table>
+                </t>
+              </div>
+            </div>
+        </t>
+      </template>
+
+</odoo>

@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_students_student,students,model_students,group_student,1,1,1,1
+access_students_faculty,students,model_students,group_faculty,1,1,1,1
+access_department_student,department,model_department,group_student,1,1,0,1
+access_department_faculty,department,model_department,group_faculty,1,1,1,1
+access_collage_student,collage,model_collage,group_student,1,0,0,0
+access_collage_faculty,collage,model_collage,group_faculty,1,1,1,1
+access_courses_student,courses,model_courses,group_student,1,0,0,0
+access_courses_faculty,courses,model_courses,group_faculty,1,1,1,0
+access_exam_student,exam,model_exam,group_student,1,0,0,0
+access_exam_faculty,exam,model_exam,group_faculty,1,1,1,1
+access_result_student,result,model_result,group_student,1,0,0,0
+access_result_faculty,result,model_result,group_faculty,1,1,1,1

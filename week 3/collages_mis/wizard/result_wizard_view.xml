@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    
+    <act_window id="result_wizard_view"
+                name="Exam"
+                src_model="students"
+                res_model="result.wizard"
+                view_mode="form"
+                target="new"/>
+
+    <record id='result_wizard_view_form' model='ir.ui.view'>
+        <field name='name'> result wizard view form</field>
+        <field name='model'>result.wizard</field>
+        <field name='arch' type='xml'>
+            <form>
+                <group>
+                    <field name='total_attendance'/>
+                    <field name='marks'/>
+                    <field name='exam_id' options="{'no_create':True,'no_open':True}"/>
+                </group>
+                <footer>
+                    <button name="action_get_exam" string="Submit" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

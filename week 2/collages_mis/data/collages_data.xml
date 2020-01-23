@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <data>
+
+        <record model="department" id="department_data">
+            <field name="department_name">COMPUTER SCIENCE</field>
+            <field name="head_of_department">Gokulnath k.</field>
+            <field name="department_code">16</field>
+        </record>
+
+        <record model="courses" id="course_data">
+            <field name="name">B.TECH</field>
+        </record>
+
+        <record model="collage" id="university_data">
+            <field name="name">parul institute of engineering and technology</field>
+            <field name="principal_name">vilin parekh</field>
+            <field name="department_ids"  eval="[(6,0,[ref('department_data')])]"/>
+        </record>
+
+        <record model="students" id="collage_data">
+            <field name="name">shivam h shah</field>
+            <field name="enrollment_no">1603031108719</field>
+            <field name="semester">8</field>
+            <field name="email_id">shahshivamssh@gmail.com</field>
+            <field name="mobile_no">9409396245</field>
+            <field name="same_as_permeneant">True</field>
+            <field name="premeanent_address">mansarover appartment,halol</field>
+            <field name="department_id" eval="ref('department_data')"/>
+            <field name="collage_id" eval="ref('university_data')"/>
+            <field name="course_id" eval="ref('course_data')"/>
+        </record>
+
+    </data>
+    
+</odoo>

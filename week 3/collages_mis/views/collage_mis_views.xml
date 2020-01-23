@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    
+        <record model="ir.actions.act_window" id="collage_informatation_action">
+            <field name="name">Student </field>
+            <field name="res_model">students</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,graph,form,calendar,pivot,kanban</field>
+            <field name='context' eval="{'search_default_ragister':1}"/>
+        </record>
+
+        <record model="ir.actions.act_window" id="department_informatation_action">
+            <field name="name">Department</field>
+            <field name="res_model">department</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="university_action">
+            <field name="name">Collage</field>
+            <field name="res_model">collage</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="course_action">
+            <field name="name">Course</field>
+            <field name="res_model">courses</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="exam_action">
+            <field name="name">Exam</field>
+            <field name="res_model">exam</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,calendar,form,graph</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="result_action">
+            <field name="name">Result</field>
+            <field name="res_model">result</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+     <menuitem 
+            name="Collage mis" 
+            id="collage_informatation_menu_root" 
+            action="collage_informatation_action"
+            web_icon="students,static/description/icon.png" />
+
+        <menuitem
+            name="Department"
+            id="collage_informatation_menu_1"
+            parent="collage_informatation_menu_root"
+            action="department_informatation_action"/>
+
+        <menuitem
+            name="Collages"
+            id="collage_informatation_menu_2"
+            parent="collage_informatation_menu_root"
+            action="university_action"/>
+
+        <menuitem
+            name="Student"
+            id="collage_informatation_submenu_5"
+            parent="collage_informatation_menu_1"
+            action="collage_informatation_action"/>
+
+        <menuitem
+            name="Department"
+            id="collage_informatation_submmenu_4"
+            parent="collage_informatation_menu_1"
+            action="department_informatation_action"
+            groups='collages_mis.group_faculty'/>
+
+        <menuitem 
+            name="collage"
+            id="collage_information_submenu_1"
+            parent='collage_informatation_menu_2'
+            action='university_action'
+            groups='collages_mis.group_faculty'/>
+
+        <menuitem
+            name="Course"
+            id="collage_informatation_submenu_2"
+            parent="collage_informatation_menu_2"
+            action="course_action"
+            groups='collages_mis.group_faculty'/>
+
+        <menuitem
+            name="Exam"
+            id="collage_informatation_submenu_3"
+            parent="collage_informatation_menu_2"
+            action="exam_action"
+             groups='collages_mis.group_faculty'/>
+
+        <menuitem
+            name="Result"
+            id="collage_informatation_submenu_6"
+            parent="collage_informatation_menu_1"
+            action="result_action"/>
+
+         <record id="collage_informatation_view_search" model="ir.ui.view">
+            <field name="name">student informatataion search</field>
+            <field name="model">students</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" filter_domain="[('name', 'like', self)]"/>
+                    <field name="enrollment_no"/>
+                    <field name='state'/>
+                    <filter name="ragister" string="ragistered students"
+                            domain="[('state', '=', 'ragistration_sucessful')]"/>
+                    <group string="Group By">
+                        <filter name="department_id" string="department"
+                                context="{'group_by':'department_id'}" groups='collages_mis.group_faculty'/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="collage_informatation_view_form" model="ir.ui.view">
+            <field name="name">student informatataion form</field>
+            <field name="model">students</field>
+            <field name="arch" type="xml">
+                <form string="students">
+                    <header>
+                        <button string="Draft" type='object' name='add_new' class='oe_highlight' state='add_new' attrs="{'invisible':['|',('state', '=', 'add_new'),('state', '=', 'ragister')]}"/>
+                        <button string='Ragister' type='object' name='action_ragister' class='oe_highlight' state='ragister' attrs="{'invisible':[('state', '!=', 'add_new')]}"/>
+                        <button string="Confirm" type='object' name='ragistration_sucessful' class='oe_highlight' state='ragistration_sucessful' attrs="{'invisible':['|',('state', '=', 'add_new'),('state', '=', 'cancell')],'invisible':[('state', '!=', 'ragister')]}"/> 
+                        <button string='Cancel' type='object' name='action_cancell' class='oe_highlight' state='cancell'  attrs="{'invisible':[('state', '!=', 'ragister')]}"/>
+                        <field name='state' widget='statusbar' statusbar_visible="add_new,ragister,ragistration_sucessful" options="{'clickable':1}"/>
+                    </header>
+                    <sheet>
+                     <div class="oe_button_box" name="button_box">  
+                        <button name="action_total_students" type='object' class="oe_stat_button"  icon="fa-flask">
+                                 <field name="total_students" string='total students' widget="statinfo" /> 
+                        </button>
+                    </div>
+                        <group>
+                            <group name="info">
+                                <field name="name"/>
+                                <field name="enrollment_no" attrs="{'invisible':[('name', '=', False)],'invisible':[('admission_year', '=', False)]}"/>
+                                <field name="semester"/>
+                                <field name="email_id"/>
+                             </group>
+                              <group>
+                                <field name="department_id" options="{'no_create':True,'no_open':True}"/>
+                                <field name="collage_id" options="{'no_create':True,'no_open':True}"/>
+                                <field name="course_id" options="{'no_create':True,'no_open':True}"/>
+                                <field name='admission_year'/>
+                                <field name='passing_year'/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string='personal informatataion'>
+                                <group>
+                                    <group>
+                                        <field name='mobile_no'/>
+                                    </group>
+                                    <group>
+                                        <field name='current_address'/>
+                                        <field name="same_as_permeneant"/>
+                                        <field name="premeanent_address" attrs="{'readonly': [('same_as_permeneant', '=', True)]}"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="exam informatataion">
+                                <group>
+                                    <group>
+                                        <field name="enrollment_no"/>
+                                        <field name='exam_id'/>
+                                        <field name='marks'/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string='Attendance'>
+                                <group>
+                                    <group>
+                                        <field name='total_attendance'/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="collage_information_view_tree" model="ir.ui.view">
+            <field name="name">student information tree</field>
+            <field name="model">students</field>
+            <field name="arch" type="xml">
+                <tree decoration-it="state=='add_new'" 
+                      decoration-muted="state=='ragister'"
+                      decoration-primary="state=='ragistration_sucessful'"
+                      decoration-danger="state=='cancell'">
+                    <field name="name"/>
+                    <field name="enrollment_no"/>
+                    <field name="semester"/>
+                    <field name='total_attendance'/>
+                    <field name='state'/>
+                </tree>
+            </field>
+        </record>
+
+        <record id='collage_informatation_view_calander' model='ir.ui.view'>
+            <field name='name'> collage informatation view calander </field>
+            <field name='model'>students</field>
+            <field name='arch' type='xml'>
+                <calendar date_start='admission_year' date_stop='passing_year'>
+                    <field name='name'/>
+                </calendar>
+            </field>
+        </record>
+
+        <record id='collage_informatation_view_graph' model='ir.ui.view'>
+            <field name='name'>collage informatation view tree</field>
+            <field name='model'>students</field>
+            <field name='arch' type='xml'>
+                <graph string='student Attendance graph' type='line'>
+                    <field name='name'/>
+                    <field name='total_attendance' type='masure'/>
+                </graph>
+            </field>
+        </record>
+
+        <record id='collage_informatation_view_pivot' model='ir.ui.view'>
+            <field name='name'>collage informatation view pivot </field>
+            <field name='model'>students</field>
+            <field name='arch' type='xml'>
+                <pivot string='students analysis'>
+                    <field name='name' type='row'/>
+                    <field name='total_attendance' type='col'/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id='collage_informatation view_kanban' model='ir.ui.view'>
+            <field name='name'>collage informatation view kanban </field>
+            <field name='model'>students</field>
+            <field name='arch' type='xml'>
+                <kanban>
+                    <field name='color'/>
+                    <field name='name'/>
+                    <field name='semester'/>
+                    <field name='enrollment_no'/>
+                    <field name='department_id'/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_global_click">
+                                <div class="o_dropdown_kanban dropdown">
+                                    <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown"
+href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                    <span class="fa fa-ellipsis-v"/>
+                                    </a>
+                                    <div class="dropdown-menu" role="menu">
+                                        <t t-if="widget.editable">
+                                            <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                                        </t>
+                                        <a role="menuitem" type="action" name="%(course_action)d">course</a>
+                                        <t t-if="widget.deletable">
+                                            <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                        </t>
+
+                                        <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                    </div>
+                                </div>
+                                <div>
+                                    <strong class="o_kanban_record_title">
+                                        <span> Name: <field name="name"/> </span>
+                                    </strong>
+                                </div>
+                                 <div class="oe_kanban_bottom_right">
+                                    <span> enrollment_no: <field name="enrollment_no"/> </span>
+                                 </div>
+                                 <div class="oe_kanban_bottom_left">
+                                    <span> semester: <field name="semester"/> </span>
+                                 </div>
+                                    <div class="oe_kanban_bottom">
+                                    <span> Department Name: <field name="department_id"/> </span>
+                                 </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="department_informatation_view_form" model="ir.ui.view">
+            <field name="name">department informatation form</field>
+            <field name="model">department</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                      <group>
+                            <group>
+                                <field name="department_name"/>
+                                <field name="head_of_department"/>
+                                <field name="department_code"/>
+                                <field name="student_ids" widget="many2many_tags"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="department_information_view_tree" model="ir.ui.view">
+            <field name="name">department information tree</field>
+            <field name="model">department</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="department_name"/>
+                    <field name="head_of_department"/>
+                    <field name="department_code"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="department_information_view_search" model="ir.ui.view">
+            <field name="name">department information search</field>
+            <field name="model">department</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="department_name"/>
+                    <field name="head_of_department"/>
+                    <field name="department_code"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="university_informatation_view_form" model="ir.ui.view">
+            <field name="name">university informatation form</field>
+            <field name="model">collage</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="principal_name"/>
+                                <field name="department_ids">
+                                    <tree>   
+                                        <field name="department_name"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="university_information_view_tree" model="ir.ui.view">
+            <field name="name">university information tree</field>
+            <field name="model">collage</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="principal_name"/>               
+                </tree>
+            </field>
+        </record>
+
+        <record id="university_information_view_search" model="ir.ui.view">
+            <field name="name">university information search</field>
+            <field name="model">collage</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="principal_name"/>             
+                </search>
+            </field>
+        </record>
+
+        <record id="courses_information_view_form" model="ir.ui.view">
+            <field name="name">courses information form</field>
+            <field name="model">courses</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                        </group>
+                    </sheet>             
+                </form>
+            </field>
+        </record>
+
+        <record id="exam_information_view_form" model="ir.ui.view">
+            <field name="name">exam information form</field>
+            <field name="model">exam</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name='collages_id'/>
+                                <field name='department_id'/>
+                                <field name='exam_type'/>
+                                <field name='exam_start_date'/>
+                                <field name='exam_end_date'/>
+                                <field name='allow_exam'/>
+                            </group>
+                        </group>
+                    </sheet>             
+                </form>
+            </field>
+        </record>
+
+        <record id="exam_information_view_search" model="ir.ui.view">
+            <field name="name">exam information view search</field>
+            <field name="model">exam</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name='collages_id'/>
+                    <field name='department_id'/>
+                    <field name='exam_type'/>
+                    <field name='exam_start_date'/>
+                    <field name='exam_end_date'/>
+                    <field name='allow_exam'/>         
+                </search>
+            </field>
+        </record>
+
+        <record id='exam_information_view_tree' model='ir.ui.view'>
+            <field name='name'> exam informatation view calendar</field>
+            <field name='model'>exam</field>
+            <field name='arch' type='xml'>
+                <calendar string="exam schedule" date_start="exam_start_date" date_stop='exam_end_date' color="department_id">
+                     <field name="exam_type"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record id='exam_information_view_graph' model='ir.ui.view'>
+            <field name='name'> exam informatation view graph</field>
+            <field name='model'>exam</field>
+            <field name='arch' type='xml'>
+                <graph string='exam' type='pie'>
+                    <field name='exam_type'/>
+                    <field name='exam_start_date'/>
+                    <field name='exam_end_date' type='masure'/>
+                </graph>
+            </field>
+        </record>
+
+        <record id='courses_information_view_tree' model='ir.ui.view'>
+            <field name="name">course informatation view tree</field>
+            <field name='model'>courses</field>
+            <field name="arch" type='xml'>
+                <tree editable='bottom' delete='0'>
+                    <field name='name'/>
+                </tree>
+            </field>
+        </record>
+
+        <record id='result_information_view_form' model='ir.ui.view'>
+            <field name='name'> result informatation view form</field>
+            <field name='model'>result</field>
+            <field name='arch' type='xml'>
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name='department_id'/>
+                                <field name='collage_id'/>
+                                <field name='course_id'/>
+                                <field name='exam_id'/>
+                                <field name='result'/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id='result_information_view_tree' model='ir.ui.view'>
+            <field name='name'> result informatation view tree</field>
+            <field name='model'>result</field>
+            <field name='arch' type='xml'>
+                <tree>
+                    <field name='department_id' />
+                    <field name='collage_id'/>
+                    <field name='course_id'/>
+                    <field name='exam_id'/>
+                    <field name='result'/>
+                </tree>
+            </field>
+        </record>
+
+</odoo>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve"> 
+    <t t-name="collage_template">
+        <div class="container">
+        	<center>
+
+        		<h1>Counter Widget</h1>
+        		<button class='btn btn-success add' style="width: 100px;">Add New</button>
+        	</center>
+       </div>
+    </t>
+
+     <t t-name="collage_widget">
+        <div class="form-inline">
+            <button class='btn btn-success increment' style="width: 100px;">+</button>
+            <input type="text" id='count-number' class="count-number text-center" value="0" style="width: 150px;" />
+            <button class='btn btn-danger decrement' style="width: 100px;">-</button>
+            <button class='btn btn-danger destroy' style="width: 100px;">remove</button>
+       </div>
+    </t>
+</templates>
