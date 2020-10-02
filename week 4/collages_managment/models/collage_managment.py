@@ -14,12 +14,16 @@ class Faculty(models.Model):
      collage_joining_date = fields.Date()
      email_id = fields.Char()
 
+    _sql_constraints = [
+        ('unique_faculty_name', 'unique (faculty_name)', 'Faculty already exists')
+    ]
+
 class Other_Info(models.Model):
     _inherit = "students"
 
     father_name = fields.Char()
     mother_name = fields.Char()
-    date_of_birth = fields.Datetime()
+    date_of_birth = fields.Date()
     division = fields.Char()
     
 class Fees(models.Model):
