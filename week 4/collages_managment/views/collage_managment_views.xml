@@ -9,10 +9,10 @@
                     <sheet>
                         <group>
                             <group>
-                                <field name="faculty_name"/>
-                                <field name="mobile_no"/>
+                                <field name="faculty_name" required="1"/>
+                                <field name="mobile_no" required="1"/>
                                 <field name="collage_joining_date"/>
-                                <field name="email_id"/>
+                                <field name="email_id" required="1"/>
                                 <field name="department_name"/>
                                 <field name="department_code"/>
                             </group>
