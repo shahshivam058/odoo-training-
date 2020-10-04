@@ -39,3 +39,7 @@ class Fees(models.Model):
     def _compute_total_fees(self):
         for i in self:
             i.total_fees=i.tution_fees+i.extra_fees+i.diposit
+    
+    def _get_last_update_date(self):
+          for rec in self:
+               rec.last_date = rec.write_date.date()
