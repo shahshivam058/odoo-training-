@@ -1,0 +1,32 @@
+<odoo>
+  <data>
+
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="openacademy_session_wizard_form">
+        <field name="name">openacademy.session.wizard.form</field>
+        <field name="model">openacademy.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" required="True"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Add Course" type="object" name="add_course"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window id="launch_session_wizard"
+        name="Add Course for Session"
+        res_model="openacademy.wizard"
+        binding_model="openacademy.session"
+        binding_views="list"
+        view_mode="form"
+        target="new"/>
+
+  </data>
+</odoo>
