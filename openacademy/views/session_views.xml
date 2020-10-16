@@ -1,0 +1,243 @@
+<odoo>
+  <data>
+
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="openacademy_session_list">
+        <field name="name">openacademy.session.list</field>
+        <field name="model">openacademy.session</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="openacademy_session_form">
+        <field name="name">openacademy.session.form</field>
+        <field name="model">openacademy.session</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Print Session" type="object" name="print_sessions" groups="openacademy.group_openacademy_manager"/>
+                    <button string="Confirm" type="object" name="confirm_session" states='draft' groups="openacademy.group_openacademy_manager"/>
+                    <button string="Done" type="object" name="done_session" states='confirmed' groups="openacademy.group_openacademy_manager"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <div class="oe_edit_only">
+                            <label for="name"/>
+                        </div>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Course Main Info">
+                            <field name="course_id"/>
+                            <field name="instructor_id" attrs="{'required': [('course_id', '!=', False)]}"/>
+                            <field name="instructor_mail"/>
+                            <field name="active"/>
+                        </group>
+                        <group string="Course Duration Info">
+                            <field name="start_date"/>
+                            <field name="stop_date"/>
+                            <field name="duration"/>
+                            <field name="seats" widget="int_range" groups="openacademy.group_openacademy_manager"/>
+                        </group>
+                        <group string="Attendees">
+                            <field name="attende_ids" widget="many2many_tags"/>
+                            <field name='attendee_count'/>
+                            <field name='occupation'/>
+                        </group>
+                    </group>
+<!--                     <notebook>
+                        <page string="Description">
+                            <field name="description"/>
+                        </page>
+                        <page string="Rich Description">
+                            <field name="rich_description"/>
+                        </page>
+                    </notebook> -->
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="openacademy_session_search">
+        <field name="name">openacademy.session.search</field>
+        <field name="model">openacademy.session</field>
+        <field name="arch" type="xml">
+        <search>
+            <field name="name"/>
+            <field name="course_id"/>
+            <field name="state"/>
+            <filter name="all_new" string="New" domain="[('state', '=', 'draft')]"/>
+            <filter name="all_done" string="Done" domain="[('state', '=', 'done')]"/>
+            <separator/>
+            <filter name="inactive" string="Inactive" domain="[('active', '=', False)]"/>
+            <group string="Group By">
+                <filter name="group_by_instructor" string="Instructor" context="{'group_by': 'instructor_id'}"/>
+                <filter name="group_by_state" string="State" context="{'group_by': 'state'}"/>
+            </group>
+        </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="openacademy_session_kanban">
+        <field name="name">openacademy.session.kanban</field>
+        <field name="model">openacademy.session</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+
+                            <!-- framework feature for inline edition or deletion -->
+                            <div class="o_dropdown_kanban dropdown">
+                                <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown" data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                    <span class="fa fa-ellipsis-v"/>
+                                </a>
+                                <div class="dropdown-menu" role="menu">
+                                    <t t-if="widget.editable">
+                                        <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                                    </t>
+                                    <t t-if="widget.deletable">
+                                        <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <!-- Portion where user gets to choose the design -->
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_title">
+                                    <strong><field name="name"/></strong>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="openacademy_session_calendar">
+        <field name="name">openacademy.session.calendar</field>
+        <field name="model">openacademy.session</field>
+        <field name="arch" type="xml">
+            <calendar color="course_id" date_start="start_date" date_stop="stop_date" string="Sessions">
+                <field name="name"/>
+                <field name="course_id"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="openacademy_session_graph">
+        <field name="name">openacademy.session.graph</field>
+        <field name="model">openacademy.session</field>
+        <field name="arch" type="xml">
+            <graph type="pie">
+                <field name="state"/>
+                <field name="attendee_count" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="openacademy_session_pivot">
+        <field name="name">openacademy.session.pivot</field>
+        <field name="model">openacademy.session</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="state" type="row"/>
+                <field name="course_id" type="col"/>
+                <field name="attendee_count" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="openacademy_session_gantt">
+        <field name="name">openacademy.session.gantt</field>
+        <field name="model">openacademy.session</field>
+        <field name="arch" type="xml">
+            <gantt date_start="start_date" date_stop="stop_date" default_group_by="instructor_id"/>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="openacademy_session_map">
+        <field name="name">openacademy.session.map</field>
+        <field name="model">openacademy.session</field>
+        <field name="arch" type="xml">
+            <map res_partner="instructor_id">
+                <marker-popup>
+                    <field name="name" string="Title"/>
+                    <field name="instructor_id" string="Instructor"/>
+                </marker-popup>
+            </map>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="openacademy_session_cohort">
+        <field name="name">openacademy.session.cohort</field>
+        <field name="model">openacademy.session</field>
+        <field name="arch" type="xml">
+            <cohort string="Analysis" date_start="start_date" date_stop="stop_date" mode="churn" interval="week"/>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="openacademy_session_dashboard">
+        <field name="name">openacademy.session.dashboard</field>
+        <field name="model">openacademy.session</field>
+        <field name="arch" type="xml">
+            <dashboard>
+                <view type="graph" ref="openacademy_session_graph"/>
+                <view type="pivot" ref="openacademy_session_pivot"/>
+                <group>
+                    <aggregate name="all_sessions" string="Sessions" group_operator="count" field="id"/>
+                    <aggregate name="all_seats" string="Seats" group_operator="sum" field="seats"/>
+                    <formula name="avg_seats" string="Avg seats per session"
+                        value="record.all_sessions/record.all_seats" />
+                </group>
+            </dashboard>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="openacademy_session_activity">
+        <field name="name">openacademy.session.activity</field>
+        <field name="model">openacademy.session</field>
+        <field name="arch" type="xml">
+            <activity string="Session Activiteis">
+                <field name="instructor_id"/>
+                <templates>
+                    <div t-name="activity-box">
+                        <img alt="partner_image" t-att-src="activity_image('res.partner', 'image_128', record.instructor_id.raw_value)"/>
+                        <div class="text-danger">
+                            <field name="name"/>
+                        </div>
+                    </div>
+                </templates>
+            </activity>
+        </field>
+    </record>
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="action_session">
+        <field name="name">Session</field>
+        <field name="res_model">openacademy.session</field>
+        <field name="view_mode">kanban,tree,calendar,graph,pivot,gantt,map,cohort,dashboard,activity,form</field>
+    </record>
+
+    <!-- Top menu item -->
+
+    <menuitem name="Session" id="menu_session" parent="menu_general"
+        action="action_session"/>
+
+  </data>
+</odoo>

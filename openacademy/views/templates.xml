@@ -1,0 +1,97 @@
+<odoo>
+    <data>
+
+
+    <template id="warning_template" name="Warning">
+        <div class="alert alert-warning p-3" role="alert">
+            <t t-esc='wargning_msg'/>
+        </div>
+    </template>
+
+    <template id="static_page" name="Simple Page">
+        <t t-call="website.layout">
+            <div class="container">
+              <div class="alert alert-danger">
+                <h1> Hello World </h1>
+              </div>
+            </div>
+            <t t-set="wargning_msg" t-value="'This is warning message from static page'"/>
+            <t t-call="openacademy.warning_template"/>
+        </t>
+    </template>
+
+    <template id="dynamic_page" name="Dynamice Page">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="container oe_strucrue">
+                    <h1 class="text-muted" t-esc="user_rec.name"/>
+                    <strong>
+                        <t t-esc="my_fnc()"/>
+                    </strong>
+                    <br/>
+                    <ul>
+                        <t t-foreach="user_ids" t-as="uid">
+                            <li><t t-esc="uid"/></li>
+                        </t>
+                    </ul>
+                    <a t-att-href="link" t-attf-class="btn #{link_class}">Go to simple page</a>
+                    <t t-set="wargning_msg" t-value="'This is warning message from dynamic page'"/>
+                    <t t-call="openacademy.warning_template"/>
+                    <!-- <a t-att-href="link" t-att-class="'btn %s' % link_class">Go to simple page</a> -->
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="courses" name="All Courses">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="container oe_strucrue">
+                    <h1 class="text-center">Course List</h1>
+                    <div class="row">
+                        <t t-foreach="courses" t-as="course">
+                            <div class="col-md-4">
+                                <div class="alert alert-info text-center">
+                                    <h3 t-esc="course.name"/><br/>
+                                    <a class="btn btn-lg btn-success" t-attf-href="/openacademy/courses/#{course.id}">Course Details</a>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="course_details" name="Course Details">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="container oe_strucrue">
+                    <div class="row">
+                        <div class="col-md-4 bg-info p-4 mt-4">
+                            <t t-esc="course.name"/>
+                        </div>
+                        <div class="offset-md-2 col-md-6 bg-info p-4 mt-4" id="course_description">
+                            <t t-esc="course.description"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="course_details_inherited" inherit_id="openacademy.course_details" customize_show="True" name="Show HTML">
+        <xpath expr="//div[@id='course_description']" position="after">
+            <div t-field="course.rich_description"/>
+        </xpath>
+    </template>
+
+    <record id="menu_dynamic_page" model="website.menu">
+        <field name="name">Dynamic Content</field>
+        <field name="url">/dynamic_page</field>
+        <field name="parent_id" ref="website.main_menu"/>
+    </record>
+
+    </data>
+</odoo>
