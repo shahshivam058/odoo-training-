@@ -27,12 +27,16 @@ class Fees(models.Model):
     _inherits = {'collage':'collages_id'}
     _description = "this module will give informatation about fees structure"
     _rec_name = 'collages_id'
+    
+    def _get_collages_id(self):     
+          clg_id = self.env['collage'].search([],limit=1)
+          return clg.id
 
     tution_fees = fields.Integer()
     extra_fees = fields.Integer()
     diposit = fields.Integer()
     last_date = fields.Date()
-    collages_id = fields.Many2one("collage",string="collage name",ondelete='restrict',required=True)
+    collages_id = fields.Many2one("collage",string="collage name",ondelete='restrict',required=True, default=_get_collages_id)
     total_fees = fields.Integer(compute='_compute_total_fees')
     
     @api.multi
