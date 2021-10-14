@@ -6,7 +6,7 @@ from odoo import models,fields,api,exceptions,_
 class Students(models.Model):
     _name = 'students'
     _rec_name = "name"
-    _description = "this class will give informatation about the collage students "
+    _description = "this model class about Students details of the college"
     
     name = fields.Char(required=True,size=10)
     enrollment_no = fields.Char(compute='_compute_enrollment_no')
