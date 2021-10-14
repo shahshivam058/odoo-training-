@@ -7,7 +7,7 @@ class Faculty(models.Model):
      _name = 'faculty'
      _inherit = "department"
      _rec_name = "faculty_name"
-     _description = "this module will give the informatation about the faculty"
+     _description = "this model gives the faculty information in the college"
 
      faculty_name = fields.Char(required="true")
      mobile_no = fields.Char()
