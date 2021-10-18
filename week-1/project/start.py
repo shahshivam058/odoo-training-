@@ -9,9 +9,10 @@ keys=[]
 def getfile(filename):
     if os.path.exists(filename):
         print("path exist")
-        f=open(filename,"r")
-        s=f.read()
-        return s
+        #f=open(filename,"r")
+        with open(filename,'r',encoding = 'utf-8') as f:
+            s=f.read()
+            return s
     else:
         print("no path")
 
